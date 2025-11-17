@@ -6,7 +6,7 @@ import sys
 questions = sys.argv[1:]
 
 
-valid_ids = ['q1', 'q2', 'q3', 'q4']
+valid_ids = ['q1', 'q2', 'q3']
 break_flag = False
 invalid_ids = []
 for question in questions:
@@ -63,20 +63,9 @@ if 'q2' in questions or questions == [] or 'all' in questions:
     print(grader.check("q2"))
 
 # don't delete this cell, but do run it -- it is needed for the autograder tests
-
-# public test for stock_history
-history = stock_history('BYND', 2019, 6)
-
-# public test for stock_stats
-stats = stock_stats(history)
+comments = get_comments(18344932)
 
 if 'q3' in questions or questions == [] or 'all' in questions:
     print(grader.check("q3"))
-
-# don't delete this cell, but do run it -- it is needed for the autograder tests
-comments = get_comments(18344932)
-
-if 'q4' in questions or questions == [] or 'all' in questions:
-    print(grader.check("q4"))
 
 

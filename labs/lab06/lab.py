@@ -185,9 +185,11 @@ def _stock_history_fmp(ticker, start, end):
     if not data:
         return pd.DataFrame()
     history = pd.DataFrame(data)
-    end_limit = datetime.strptime(end, '%Y-%m-%d')
     history['date'] = pd.to_datetime(history['date'])
-    history = history[(history['date'] >= start_dt) & (history['date'] <= end_limit)]
+    start_dt = datetime.strptime(start, '%Y-%m-%d')
+    end_dt = datetime.strptime(end, '%Y-%m-%d')
+    mask = (history['date'] >= start_dt) & (history['date'] <= end_dt)
+    history = history.loc[mask].copy()
     history = history.sort_values('date').reset_index(drop=True)
     return history
 
