@@ -1,6 +1,6 @@
 # Cooking Time vs. Recipe Ratings
 
-**Author:** Tommy Deitel  
+**Author:** Thomas Deitel  
 **Course:** DSC 80 — Fall 2025
 
 Food.com hosts 83,782 recipes and 731,927 user interactions spanning a decade. My project asks: **Do longer, more complex recipes actually earn higher ratings, or do home cooks reward speedy dishes?**
