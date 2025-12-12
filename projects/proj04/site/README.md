@@ -72,7 +72,27 @@ Both tests use the difference in mean rating as the statistic with `α = 0.05`.
 - **Next steps:** Engineer domain-aware features (`log_minutes`, ingredient-per-step ratios, tag-derived flags) and run a grid search over class weights / `C`, while also trying tree-based models (e.g., RandomForest) that can capture non-linear interactions.
 
 ## Final Model
-Planned upgrades (feature engineering + model selection) will be reported here for the final submission.
+- Added log-minute scaling plus recipe complexity ratios (`ingredients_per_step`, `steps_per_minute`, `calories_per_minute`, `fat_to_protein`).
+- Included categorical context: prep-time bin, ingredient-count bin, and `is_quick` flag (one-hot encoded).
+- Tuned a RandomForestClassifier via GridSearchCV over `n_estimators`, `max_depth`, and `min_samples_split` (3-fold CV, F1 objective).
+- **Best params:** 400 trees, unlimited depth, min split 2 with balanced-subsample class weights.
+- **Performance:** `test_accuracy=0.750`, `test_F1=0.857`, `test_recall=0.996` (higher recall than baseline while preserving F1).
+
+<iframe src="assets/final_feature_importances.html" width="800" height="500" frameborder="0"></iframe>
+
+Top importances show review volume proxies (`review_count`, ingredient ratios) and nutrient density all matter more than raw minutes alone.
 
 ## Fairness Analysis
-Coming soon: I plan to compare performance between quick weeknight dishes and multi-hour recipes using the final model’s F1 or recall.
+- **Groups:** Quick weeknight dishes (`minutes_total <= 30`) vs. slower recipes (>30).
+- **Metric:** Recall on the positive class (predicting highly rated recipes).
+- **Hypotheses:** H0 — recalls are equal up to chance; H1 — recalls differ.
+- **Result:** Quick recall 0.998 vs. slow recall 0.995, observed difference +0.003 with permutation `p = 0.016`. The gap is statistically detectable but practically tiny (<0.5 percentage points).
+
+| group | recall |
+| --- | ---: |
+| Quick (<=30 min) | 0.998 |
+| Slow (>30 min) | 0.995 |
+
+<iframe src="assets/fairness_permutation.html" width="800" height="500" frameborder="0"></iframe>
+
+I will continue to monitor parity if I experiment with alternative algorithms (e.g., gradient boosting), but the current difference is negligible for end users.
